@@ -1,0 +1,17 @@
+# Example systemd service
+
+[Unit]
+Description=ARP Listener for Wake-on-LAN
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart=/usr/local/bin/arpwake --iface wlan0 --target-ip 192.168.0.128 --wol-mac 00:aa:bb:cc:dd:ee --wol-broadcast 192.168.0.255
+Restart=on-failure
+RestartSec=5s
+AmbientCapabilities=CAP_NET_RAW CAP_NET_ADMIN
+CapabilityBoundingSet=CAP_NET_RAW CAP_NET_ADMIN
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target
