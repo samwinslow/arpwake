@@ -1,6 +1,12 @@
 # arpwake
 Listens for ARP requests and sends Wake-on-LAN packets to a machine that should wake on network access.
 
+## Background
+
+The author's use case is to wake a NAS or other targeted device on any network access, not just magic packets. This can be done by running a lightweight Linux server 24/7.
+
+The targeted device should have wake-on-LAN (magic packets) enabled and have a static DHCP lease/fixed IPv4 address. Related: [NAS hardware info and configuration](https://samwinslow.com/post/nas-build-2025).
+
 Inspired by https://github.com/danielpgross/friendly_neighbor
 
 ## Building
@@ -18,6 +24,8 @@ sudo cp arpwake /usr/local/bin/arpwake  # or wherever you wish to install
 sudo setcap cap_net_raw,cap_net_admin+ep /usr/local/bin/arpwake  # grant networking capabilities so we don't need to run as root
 
 # Create a systemd service to run automatically
+# (customize this file with your interface and address values)
+
 sudo cp arpwake.service /etc/systemd/system/arpwake.service
 sudo systemctl daemon-reexec
 sudo systemctl daemon-reload
@@ -25,10 +33,6 @@ sudo systemctl enable --now arpwake.service
 ```
 
 ## Usage example
-
-[Hardware info](https://samwinslow.com/post/nas-build-2025)
-
-The author's use case is to wake a NAS or other targeted device on any network access, not just magic packets. The targeted device should have wake-on-LAN (magic packets) enabled and have a static DHCP lease/fixed IPv4 address.
 
 `Usage: arpwake --iface <iface> --target-ip <target_ip> --wol-mac <mac_str> --wol-broadcast <broadcast_ip>`
 
